@@ -28,19 +28,27 @@ class SnapdropServer {
     }
 
     _onConnection(peer) {
-        this._joinRoom(peer);
-        peer.socket.on('message', message => this._onMessage(peer, message));
+        peer.socket.on('message', message => this._onMessage(peer, message, true));
         peer.socket.on('error', console.error);
         this._keepAlive(peer);
 
-        // send displayName
-        this._send(peer, {
-            type: 'display-name',
-            message: {
-                displayName: peer.name.displayName,
-                deviceName: peer.name.deviceName
+        let confirmUsername = () => {
+            if(peer.name.displayName){
+                this._joinRoom(peer);
+                this._send(peer, {
+                    type: 'display-name',
+                    message: {
+                        displayName: peer.name.displayName,
+                        deviceName: peer.name.deviceName
+                    }
+                });
+            }else{
+                setTimeout(()=>confirmUsername(),500)
             }
-        });
+        }
+
+        confirmUsername()
+       
     }
 
     _onHeaders(headers, response) {
@@ -49,7 +57,7 @@ class SnapdropServer {
         headers.push('Set-Cookie: peerid=' + response.peerId + "; SameSite=Strict; Secure");
     }
 
-    _onMessage(sender, message) {
+    _onMessage(sender, message, waitDisplayname) {
         // Try to parse message 
         try {
             message = JSON.parse(message);
@@ -64,6 +72,13 @@ class SnapdropServer {
             case 'pong':
                 sender.lastBeat = Date.now();
                 break;
+            case 'displayname':
+                sender.name.displayName = message.displayname
+                break
+        }
+
+        if(waitDisplayname){
+            return
         }
 
         // relay message to recipient
@@ -224,21 +239,13 @@ class Peer {
         if(!deviceName)
             deviceName = 'Unknown Device';
 
-        const displayName = uniqueNamesGenerator({
-            length: 2,
-            separator: ' ',
-            dictionaries: [colors, animals],
-            style: 'capital',
-            seed: this.id.hashCode()
-        })
-
         this.name = {
             model: ua.device.model,
             os: ua.os.name,
             browser: ua.browser.name,
             type: ua.device.type,
-            deviceName,
-            displayName
+            deviceName: deviceName,
+            displayName:  undefined
         };
     }
 
