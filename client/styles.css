@@ -498,6 +498,10 @@ button::-moz-focus-inner {
     max-height: 300px;
 }
 
+.width100{
+    width: 100%;
+}
+
 
 /* Info Animation */
 

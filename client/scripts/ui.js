@@ -9,8 +9,11 @@ window.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 Events.on('display-name', e => {
     const me = e.detail.message;
     const $displayName = $('displayName')
-    $displayName.textContent = 'You are known as ' + me.displayName;
+    $displayName.textContent = me.displayName;
     $displayName.title = me.deviceName;
+    $displayName.onclick = ()=>{
+        Events.fire('displayname-set')
+    }
 });
 
 class PeersUI {
@@ -348,6 +351,33 @@ class SendTextDialog extends Dialog {
     }
 }
 
+class SetDisplayNameDialog extends Dialog {
+    constructor() {
+        super('setDisplayNameDialog');
+        Events.on('displayname-set', e => this._setDisplayName())
+        this.$text = this.$el.querySelector('#textInput');
+        const button = this.$el.querySelector('form');
+        button.addEventListener('submit', e => this._set(e));
+    }
+
+    _setDisplayName(){
+        this.show()
+    }
+
+    _set(e) {
+        e.preventDefault();
+        this._setCookie('displayname', this.$text.value, 3650)
+        Events.fire('displayname-isset')
+    }
+
+    _setCookie(cname, cvalue, exdays){
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+}
+
 class ReceiveTextDialog extends Dialog {
     constructor() {
         super('receiveTextDialog');
@@ -528,8 +558,6 @@ class WebShareTargetUI {
 
 class Snapdrop {
     constructor() {
-        const server = new ServerConnection();
-        const peers = new PeersManager(server);
         const peersUI = new PeersUI();
         Events.on('load', e => {
             const receiveDialog = new ReceiveDialog();
@@ -539,6 +567,10 @@ class Snapdrop {
             const notifications = new Notifications();
             const networkStatusUI = new NetworkStatusUI();
             const webShareTargetUI = new WebShareTargetUI();
+            const setDisplayNameDialog = new SetDisplayNameDialog();
+
+            const server = new ServerConnection();
+            const peers = new PeersManager(server);
         });
     }
 }

@@ -4,23 +4,57 @@ window.isRtcSupported = !!(window.RTCPeerConnection || window.mozRTCPeerConnecti
 class ServerConnection {
 
     constructor() {
-        this._connect();
-        Events.on('beforeunload', e => this._disconnect());
-        Events.on('pagehide', e => this._disconnect());
-        document.addEventListener('visibilitychange', e => this._onVisibilityChange());
+        Events.on('displayname-isset', e => this._tryconnect())
+        this._tryconnect()
     }
 
-    _connect() {
+    _tryconnect(){
+        this._disconnect()
+        let displayname = this._getCookie('displayname')
+        if(!displayname){
+            // no name,set first
+            Events.fire('displayname-set');
+        }else{
+            this._connect(displayname);
+            Events.on('beforeunload', e => this._disconnect());
+            Events.on('pagehide', e => this._disconnect());
+            document.addEventListener('visibilitychange', e => this._onVisibilityChange());
+        }
+    }
+
+    _connect(displayname) {
         clearTimeout(this._reconnectTimer);
         if (this._isConnected() || this._isConnecting()) return;
         const ws = new WebSocket(this._endpoint());
         ws.binaryType = 'arraybuffer';
-        ws.onopen = e => console.log('WS: server connected');
+        ws.onopen = e => {
+            this.send({
+                type: 'displayname',
+                displayname: displayname
+            })
+            console.log('WS: server connected')
+        };
         ws.onmessage = e => this._onMessage(e.data);
         ws.onclose = e => this._onDisconnect();
         ws.onerror = e => console.error(e);
         this._socket = ws;
     }
+
+    _getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
 
     _onMessage(msg) {
         msg = JSON.parse(msg);
@@ -63,9 +97,11 @@ class ServerConnection {
     }
 
     _disconnect() {
-        this.send({ type: 'disconnect' });
-        this._socket.onclose = null;
-        this._socket.close();
+        if(this._socket){
+            this.send({ type: 'disconnect' });
+            this._socket.onclose = null;
+            this._socket.close();
+        }
     }
 
     _onDisconnect() {

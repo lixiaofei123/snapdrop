@@ -70,7 +70,7 @@
         <svg class="icon logo">
             <use xlink:href="#wifi-tethering" />
         </svg>
-        <div id="displayName" placeholder="The easiest way to transfer data across devices"></div>
+        <div>You are known as <a id="displayName" href="javascript:void(0)" style="text-decoration: none;color: #599cfc;"></a></div>
         <div class="font-body2">You can be discovered by everyone on this network</div>
     </footer>
     <!-- Receive Dialog -->
@@ -103,6 +103,21 @@
                     <div id="textInput" class="textarea" role="textbox" placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
                     <div class="row-reverse">
                         <button class="button" type="submit" close>Send</button>
+                        <a class="button" close>Cancel</a>
+                    </div>
+                </x-paper>
+            </x-background>
+        </form>
+    </x-dialog>
+    <!-- Set username Dialog -->
+    <x-dialog id="setDisplayNameDialog">
+        <form action="#">
+            <x-background class="full center">
+                <x-paper shadow="2">
+                    <h3>Set your displayname</h3>
+                    <input id="textInput" class="textarea width100" role="textbox" placeholder="Set your display name" autocomplete="off" autofocus maxlength="12"></input>
+                    <div class="row-reverse">
+                        <button class="button" type="submit" close>Confirm</button>
                         <a class="button" close>Cancel</a>
                     </div>
                 </x-paper>
