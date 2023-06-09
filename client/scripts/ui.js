@@ -366,7 +366,11 @@ class SetDisplayNameDialog extends Dialog {
 
     _set(e) {
         e.preventDefault();
-        this._setCookie('displayname', this.$text.value, 3650)
+        let displayName = this.$text.innerText
+        if(displayName.length > 12){
+            displayName = displayName.substr(0,12)
+        }
+        this._setCookie('displayname', displayName, 3650)
         Events.fire('displayname-isset')
     }
 
@@ -374,7 +378,7 @@ class SetDisplayNameDialog extends Dialog {
         const d = new Date();
         d.setTime(d.getTime() + (exdays*24*60*60*1000));
         let expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        document.cookie = cname + "=" + encodeURIComponent(cvalue) + ";" + expires + ";path=/";
     }
 }
 

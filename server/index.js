@@ -28,13 +28,17 @@ class SnapdropServer {
     }
 
     _onConnection(peer) {
-        peer.socket.on('message', message => this._onMessage(peer, message, true));
+        let onlyGetUsername = true
+        peer.socket.on('message', message => {
+            this._onMessage(peer, message, onlyGetUsername)
+        });
         peer.socket.on('error', console.error);
         this._keepAlive(peer);
 
         let confirmUsername = () => {
             if(peer.name.displayName){
                 this._joinRoom(peer);
+                onlyGetUsername = false
                 this._send(peer, {
                     type: 'display-name',
                     message: {
