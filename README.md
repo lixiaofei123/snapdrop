@@ -1,3 +1,15 @@
+
+
+基于[Snapdrop](https://github.com/RobinLinus/snapdrop/tree/eac780092626761602bfe978c8082908c99c3067)的修改版本，主要是加了支持自定义设备名称的功能，方便区分连入同一网络的不同设备。
+
+效果如下图所示
+<br>
+<img src="images/image1.png" height="500" />
+<br>
+
+通常当您第一次打开页面的时候，会要求您输入设备名称，并且会将您输入的设备名称保存到浏览器的Cookies中。如果您想修改设备名称，点击上图中红框标出的当前名称即可修改。
+
+
 # Snapdrop 
 
 [Snapdrop](https://snapdrop.net): local file sharing in your browser. Inspired by Apple's Airdrop.
