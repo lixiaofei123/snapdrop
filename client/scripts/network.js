@@ -109,7 +109,7 @@ class ServerConnection {
 
     _onDisconnect() {
         console.log('WS: server disconnected');
-        Events.fire('notify-user', 'Connection lost. Retry in 5 seconds...');
+        Events.fire('notify-user', '连接失败，将在5秒后重试....');
         clearTimeout(this._reconnectTimer);
         this._reconnectTimer = setTimeout(_ => this._connect(), 5000);
     }
