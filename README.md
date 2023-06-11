@@ -1,21 +1,24 @@
+[English](README.md)
 
+Modified Version Based on [Snapdrop](https://github.com/RobinLinus/snapdrop/tree/eac780092626761602bfe978c8082908c99c3067)
 
-基于[Snapdrop](https://github.com/RobinLinus/snapdrop/tree/eac780092626761602bfe978c8082908c99c3067)的修改版本，主要是加了支持自定义设备名称的功能，方便区分连入同一网络的不同设备。
+The modified version of Snapdrop includes the functionality to customize device names, making it easier to distinguish between different devices connected to the same network.
 
-效果如下图所示
+The effect is shown in the following image:
+
 <br>
 <img src="images/image1.png" height="500" />
 <br>
 
-当您第一次打开页面的时候，会要求您输入设备名称，并且会将您输入的设备名称保存到浏览器的Cookies中。如果您想修改设备名称，点击上图中红框标出的当前名称即可修改。
+When you first open the page, you will be prompted to enter a device name, and the entered device name will be saved in the browser's cookies. If you want to modify the device name, simply click on the current name highlighted in the red box in the above image.
 
-您可以直接访问下面URL访问已经搭建的SnapDrop示例。
+You can directly access the following URL to visit the Snapdrop that has been set up:
+[https://drop.lixf.cc/](https://drop.lixf.cc/])
 
-[https://drop.lixf.cc/](https://drop.lixf.cc/)
+The principle of Snapdrop is that devices within the same local network (with the same public IP address) open the web page and initially discover each other through the Snapdrop server. After establishing a connection through the WebRTC protocol, subsequent file and text transfers will be done through the local network (i.e., no longer going through the public server). Therefore, you generally do not need to set up your own instance of Snapdrop but can directly access instances set up by others.
 
-SnapDrop的原理是同一局域网(具备同一个公网IP)的设备打开网页后，在初始阶段通过SnapDrop服务器进行互相发现，然后各个设备通过WebRTC协议建立连接以后，后续的文件、文本传输就会通过局域网进行传输(即不再经过公网服务器)。因此通常您不要自己搭建SnapDrop实例，直接访问别人搭建好的实例即可。
+If you want to set up your own Snapdrop example, you can use the Docker image [mrlee326/snapdrop](https://hub.docker.com/r/mrlee326/snapdrop) and deploy a self-hosted instance using the following command for an HTTP-based instance. However, please note that some browsers restrict the usage of the WebRTC protocol to the HTTPS protocol. Therefore, you may need to use Nginx as a proxy or modify the Dockerfile and rebuild the Docker image to achieve this purpose.
 
-如果您想要搭建自己的SnapDrop示例，可以使用Docker镜像[mrlee326/snapdrop](https://hub.docker.com/r/mrlee326/snapdrop)，用下面命令搭建一个HTTP协议的自托管示例。由于部分浏览器会限制只能在HTTPS协议下使用WEBRTC协议，可能你需要使用Nginx进行代理或者自行修改Dockerfile重新构建Docker镜像来达到此目的。
 
 ```
 docker run --detach --restart=always --name snap_drop -p 8080:80  mrlee326/snapdrop
@@ -23,9 +26,10 @@ docker run --detach --restart=always --name snap_drop -p 8080:80  mrlee326/snapd
 
 
 
------------  分割线 ------------
+----------- Separator Line ------------
 
-下面是原仓库的README
+Below is the original README of the repository:
+
 
 # Snapdrop 
 
