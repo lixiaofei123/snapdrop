@@ -1,4 +1,6 @@
-将下面的文字翻译成英文 基于[Snapdrop](https://github.com/RobinLinus/snapdrop/tree/eac780092626761602bfe978c8082908c99c3067)的修改版本，主要是加了支持自定义设备名称的功能，方便区分连入同一网络的不同设备。
+[English](README.md) | 中文
+
+基于[Snapdrop](https://github.com/RobinLinus/snapdrop/tree/eac780092626761602bfe978c8082908c99c3067)的修改版本，主要是加了支持自定义设备名称的功能，方便区分连入同一网络的不同设备。
 
 效果如下图所示
 <br>

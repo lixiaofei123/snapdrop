@@ -1,4 +1,4 @@
-[English](README.md)
+English | [中文](README_zh.md)
 
 Modified Version Based on [Snapdrop](https://github.com/RobinLinus/snapdrop/tree/eac780092626761602bfe978c8082908c99c3067)
 
