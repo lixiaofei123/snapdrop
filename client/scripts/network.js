@@ -5,6 +5,9 @@ class ServerConnection {
 
     constructor() {
         Events.on('displayname-isset', e => this._tryconnect())
+        Events.on('beforeunload', e => this._disconnect());
+        Events.on('pagehide', e => this._disconnect());
+        document.addEventListener('visibilitychange', e => this._onVisibilityChange());
         this._tryconnect()
     }
 
@@ -15,10 +18,10 @@ class ServerConnection {
             // no name,set first
             Events.fire('displayname-set');
         }else{
+            if(this.peersMgr){
+                this.peersMgr.disAllPeer()
+            }
             this._connect(displayname);
-            Events.on('beforeunload', e => this._disconnect());
-            Events.on('pagehide', e => this._disconnect());
-            document.addEventListener('visibilitychange', e => this._onVisibilityChange());
         }
     }
 
@@ -400,6 +403,7 @@ class PeersManager {
     constructor(serverConnection) {
         this.peers = {};
         this._server = serverConnection;
+        this._server.peersMgr = this;
         Events.on('signal', e => this._onMessage(e.detail));
         Events.on('peers', e => this._onPeers(e.detail));
         Events.on('files-selected', e => this._onFilesSelected(e.detail));
@@ -445,6 +449,12 @@ class PeersManager {
         delete this.peers[peerId];
         if (!peer || !peer._peer) return;
         peer._peer.close();
+    }
+
+    disAllPeer(){
+        for(let peerid of Object.keys(this.peers)){
+            this._onPeerLeft(peerid)
+        }
     }
 
 }
