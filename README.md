@@ -13,7 +13,9 @@ The effect is shown in the following image:
 When you first open the page, you will be prompted to enter a device name, and the entered device name will be saved in the browser's cookies. If you want to modify the device name, simply click on the current name highlighted in the red box in the above image.
 
 You can directly access the following URL to visit the Snapdrop that has been set up:
-[https://drop.lixf.cc/](https://drop.lixf.cc/])
+[https://drop.lixf.ink/](https://drop.lixf.ink/])
+
+中国用户请使用此汉化网址 [https://drop.lixf.cc/](https://drop.lixf.cc/])
 
 The principle of Snapdrop is that devices within the same local network (with the same public IP address) open the web page and initially discover each other through the Snapdrop server. After establishing a connection through the WebRTC protocol, subsequent file and text transfers will be done through the local network (i.e., no longer going through the public server). Therefore, you generally do not need to set up your own instance of Snapdrop but can directly access instances set up by others.
 
