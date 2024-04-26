@@ -271,6 +271,7 @@ class ReceiveDialog extends Dialog {
         }
         if(file.mime.split('/')[0] === 'image'){
             console.log('the file is image');
+            this.$el.querySelector('.preview').style.maxWidth = '100%'
             this.$el.querySelector('.preview').style.visibility = 'inherit';
             this.$el.querySelector("#img-preview").src = url;
         }
@@ -409,7 +410,7 @@ class ReceiveTextDialog extends Dialog {
 
     async _onCopy() {
         await navigator.clipboard.writeText(this.$text.textContent);
-        Events.fire('notify-user', 'Copied to clipboard');
+        Events.fire('notify-user', '已经复制到粘贴板');
     }
 }
 
@@ -446,7 +447,7 @@ class Notifications {
     _requestPermission() {
         Notification.requestPermission(permission => {
             if (permission !== 'granted') {
-                Events.fire('notify-user', Notifications.PERMISSION_ERROR || 'Error');
+                Events.fire('notify-user', Notifications.PERMISSION_ERROR || '错误');
                 return;
             }
             this._notify('Even more snappy sharing!');
@@ -532,11 +533,11 @@ class NetworkStatusUI {
     }
 
     _showOfflineMessage() {
-        Events.fire('notify-user', 'You are offline');
+        Events.fire('notify-user', '当前已经离线');
     }
 
     _showOnlineMessage() {
-        Events.fire('notify-user', 'You are back online');
+        Events.fire('notify-user', '已重新上线');
     }
 }
 
