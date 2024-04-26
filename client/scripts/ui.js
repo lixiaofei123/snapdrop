@@ -272,6 +272,7 @@ class ReceiveDialog extends Dialog {
         if(file.mime.split('/')[0] === 'image'){
             console.log('the file is image');
             this.$el.querySelector('.preview').style.visibility = 'inherit';
+            this.$el.querySelector("#img-preview").style.maxWidth= '100%'
             this.$el.querySelector("#img-preview").src = url;
         }
 
